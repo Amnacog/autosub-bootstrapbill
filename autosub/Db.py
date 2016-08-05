@@ -93,8 +93,8 @@ class lastDown():
         if not 'source' in Ldict.keys():
             Ldict['source'] = None
         DstFile = os.path.join(Ldict['folder'],Ldict['file'])
-        if Lang == autosub.DUTCH:
-            DstFile += Ldict['NLext']
+        if Lang == autosub.FRENCH:
+            DstFile += Ldict['FRext']
         elif Lang == autosub.ENGLISH:
             DstFile += Ldict['ENext']
         try:

@@ -132,13 +132,13 @@ class Config:
             return str(tmpl)
 
     @cherrypy.expose  
-    def saveConfig(self, subeng, skipstringnl, skipstringen, skipfoldersnl,skipfoldersen, subnl, postprocesscmd, 
+    def saveConfig(self, subeng, skipstringfr, skipstringen, skipfoldersfr, skipfoldersen, subfr, postprocesscmd, 
                    logfile, seriespath, subcodec,  username, 
                    password, webroot, skipshow, lognum, loglevelconsole, loglevel, 
                    webserverip, webserverport, usernamemapping, useraddic7edmapping,
                    opensubtitlesuser, opensubtitlespasswd,  addic7eduser, addic7edpasswd, addic7ed=None,opensubtitles=None, podnapisi=None, subscene=None, 
                    wantedfirst = None, browserrefresh = None, skiphiddendirs = None,useaddic7ed=None,launchbrowser=None,interval = None, logsize=None,
-                   fallbacktoeng = None, downloadeng = None, englishsubdelete = None, notifyen = None, notifynl = None, downloaddutch = None,
+                   fallbacktoeng = None, downloadeng = None, englishsubdelete = None, notifyen = None, notifyfr = None, downloadfrench = None,
                    mmssource = u'0', mmsquality = u'0', mmscodec = u'0', mmsrelease = u'0',hearingimpaired = None):
 
         if autosub.SEARCHBUSY:
@@ -152,13 +152,13 @@ class Config:
         autosub.SERIESPATH = seriespath
         autosub.LOGFILE = logfile
         autosub.DOWNLOADENG = True if downloadeng else False
-        autosub.DOWNLOADDUTCH = True if downloaddutch else False
+        autosub.DOWNLOADFRENCH = True if downloadfrench else False
         autosub.FALLBACKTOENG = True if fallbacktoeng else False
         autosub.ENGLISHSUBDELETE = True if englishsubdelete else False
         autosub.SUBENG = subeng
-        autosub.SUBNL = subnl
+        autosub.SUBFR = subfr
         autosub.NOTIFYEN = True if notifyen else False 
-        autosub.NOTIFYNL = True if notifynl else False
+        autosub.NOTIFYFR = True if notifyfr else False
         autosub.POSTPROCESSCMD = postprocesscmd
         autosub.SUBCODEC = subcodec
         autosub.LAUNCHBROWSER = True if launchbrowser else False
@@ -173,9 +173,9 @@ class Config:
         autosub.ADDIC7EDUSER = addic7eduser
         autosub.ADDIC7EDPASSWD = addic7edpasswd.replace("%","%%")
         autosub.BROWSERREFRESH = browserrefresh
-        autosub.SKIPSTRINGNL = skipstringnl
+        autosub.SKIPSTRINGFR = skipstringfr
         autosub.SKIPSTRINGEN = skipstringen
-        autosub.SKIPFOLDERSNL = skipfoldersnl
+        autosub.SKIPFOLDERSFR = skipfoldersfr
         autosub.SKIPFOLDERSEN = skipfoldersen
         autosub.MINMATCHSCORE = int(mmssource) + int(mmsquality) + int(mmscodec) + int(mmsrelease)
         autosub.SEARCHINTERVAL = int(interval)*3600

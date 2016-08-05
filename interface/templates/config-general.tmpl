@@ -55,26 +55,26 @@
 	<div class="row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-2">
-			#if $autosub.DOWNLOADDUTCH == True:
-				<input type="checkbox" name="downloaddutch" checked value="Yes">&emsp;Dutch
+			#if $autosub.DOWNLOADFRENCH == True:
+				<input type="checkbox" name="downloadfrench" checked value="Yes">&emsp;French
 			#else:
-				<input type="checkbox" name="downloaddutch" value="Yes">&emsp;Dutch
+				<input type="checkbox" name="downloadfrench" value="Yes">&emsp;French
 			#end if
 		</div>
 		<div class="col-sm-1">
-			#if $autosub.NOTIFYNL == True:
-				<input type="checkbox" name="notifynl" checked value="Yes">&emsp;Notify
+			#if $autosub.NOTIFYFR == True:
+				<input type="checkbox" name="notifyfr" checked value="Yes">&emsp;Notify
 			#else:
-				<input type="checkbox" name="notifynl" value="Yes">&emsp;Notify
+				<input type="checkbox" name="notifyfr" value="Yes">&emsp;Notify
 			#end if
 		</div>
 
-		<label for="DutchSubtitleSuffix" class="col-sm-2 control-label">Dutch Suffix 
-			<a data-toggle="tooltip" data-original-title="Dutch subtitles are renamed to: filename.Dutch-extension.srt. Default is empty.">
+		<label for="FrenchSubtitleSuffix" class="col-sm-2 control-label">French Suffix
+			<a data-toggle="tooltip" data-original-title="French subtitles are renamed to: filename.French-extension.srt. Default is empty.">
 				<span class="glyphicon glyphicon-info-sign"></span>
 			</a>
 		</label>
-		<div class="col-sm-1 form-group-sm-1"><input type="text" class="form-control" name="subnl" value="$autosub.SUBNL"></div>
+		<div class="col-sm-1 form-group-sm-1"><input type="text" class="form-control" name="subfr" value="$autosub.SUBFR"></div>
     	<div class="form-group">&nbsp;</div>
 
 		<div class="col-sm-2"></div>
@@ -93,7 +93,7 @@
 			#end if
 		</div>
         <label for="EnglishSubtitleSuffix" class="col-sm-2 control-label">English Suffix 
-			<a data-toggle="tooltip" data-original-title="English subtitles are renamed to: filename.English-extension.srt. Must be different from the dutch extension.">
+			<a data-toggle="tooltip" data-original-title="English subtitles are renamed to: filename.English-extension.srt. Must be different from the french extension.">
 				<span class="glyphicon glyphicon-info-sign"></span>
 			</a>
 		</label>
@@ -110,18 +110,18 @@
 
 		<div class="col-sm-4">
 			#if $autosub.FALLBACKTOENG == True:
-				<input type="checkbox" name="fallbacktoeng" checked value="Yes">&emsp;Fallback to English if Dutch not available
+				<input type="checkbox" name="fallbacktoeng" checked value="Yes">&emsp;Fallback to English if French not available
 			#else:
-				<input type="checkbox" name="fallbacktoeng" value="Yes">&emsp;Fallback to English when Dutch not available
+				<input type="checkbox" name="fallbacktoeng" value="Yes">&emsp;Fallback to English when French not available
 			#end if
 		</div>
 		<div class="form-group">&nbsp;</div>
 		<div class="col-sm-2"></div>
 		<div class="col-sm-4">
 			#if $autosub.ENGLISHSUBDELETE == True:
-				<input type="checkbox" name="englishsubdelete" checked value="Yes">&emsp;Remove English sub when Dutch sub arrives
+				<input type="checkbox" name="englishsubdelete" checked value="Yes">&emsp;Remove English sub when French sub arrives
 			#else:
-				<input type="checkbox" name="englishsubdelete" value="True">&emsp;Remove English sub when Dutch sub arrives
+				<input type="checkbox" name="englishsubdelete" value="True">&emsp;Remove English sub when French sub arrives
 			#end if
 		</div>
 		<div class="form-group">&nbsp;</div>
@@ -140,12 +140,12 @@
 <hr>
 <div>		
 	<div class="form-group">
-		<label for="SkipSearch" class="col-sm-2 control-label">Skip Search Dutch  
-			<a data-toggle="tooltip" data-original-title="Skip search for Dutch subtitle if string in file name. Multiple strings seperated with a comma are allowed, spaces are considered part of the skipstring.">
+		<label for="SkipSearch" class="col-sm-2 control-label">Skip Search French  
+			<a data-toggle="tooltip" data-original-title="Skip search for French subtitle if string in file name. Multiple strings seperated with a comma are allowed, spaces are considered part of the skipstring.">
 				<span class="glyphicon glyphicon-info-sign"></span></a>
 		</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="skipstringnl" value="$autosub.SKIPSTRINGNL" placeholder="If one this strings are found in the video name, the search for Dutch subtitles will be skipped for that video.">
+			<input type="text" class="form-control" name="skipstringfr" value="$autosub.SKIPSTRINGFR" placeholder="If one this strings are found in the video name, the search for French subtitles will be skipped for that video.">
 		</div>
 	</div>
 	<div class="form-group">
@@ -162,12 +162,12 @@
 
 <div>		
 	<div class="form-group">
-		<label for="SkipFolder" class="col-sm-2 control-label">Skip Folder Dutch  
-			<a data-toggle="tooltip" data-original-title="Skip search for Dutch subtitle in this folder (and subfolders). Multiple strings seperated with a comma are allowed. Folder must be a subfolder of the main Serie Folder(don't include the Serie Folder part).">
+		<label for="SkipFolder" class="col-sm-2 control-label">Skip Folder French  
+			<a data-toggle="tooltip" data-original-title="Skip search for French subtitle in this folder (and subfolders). Multiple strings seperated with a comma are allowed. Folder must be a subfolder of the main Serie Folder(don't include the Serie Folder part).">
 				<span class="glyphicon glyphicon-info-sign"></span></a>
 		</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="skipfoldersnl" value="$autosub.SKIPFOLDERSNL" placeholder="This subfolder(s) will not be searched for dutch subs.">
+			<input type="text" class="form-control" name="skipfoldersfr" value="$autosub.SKIPFOLDERSFR" placeholder="This subfolder(s) will not be searched for french subs.">
 		</div>
 	</div>
 	<div class="form-group">

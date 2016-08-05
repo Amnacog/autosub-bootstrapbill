@@ -287,8 +287,8 @@ def DownloadSub(Wanted,SubList):
     log.debug("downloadSubs: Download dict: %r" % Wanted)
     destdir = Wanted['folder']
     destsrt = os.path.join(Wanted['folder'], Wanted['file'])
-    if autosub.DUTCH in SubList[0]['Lang'] :
-        destsrt += Wanted['NLext']
+    if autosub.FRENCH in SubList[0]['Lang'] :
+        destsrt += Wanted['FRext']
     elif autosub.ENGLISH in SubList[0]['Lang'] :
         destsrt += Wanted['ENext']
     else:
@@ -324,7 +324,7 @@ def DownloadSub(Wanted,SubList):
     # Send notification 
 
     VideoFile = os.path.join(Wanted['folder'] , Wanted['file'] + Wanted['container'])
-    if (autosub.NOTIFYNL and Sub['Lang'] == autosub.DUTCH) or (autosub.NOTIFYEN and Sub['Lang'] == autosub.ENGLISH) :
+    if (autosub.NOTIFYFR and Sub['Lang'] == autosub.FRENCH) or (autosub.NOTIFYEN and Sub['Lang'] == autosub.ENGLISH) :
         notify.notify(Sub['Lang'], destsrt.encode('ascii','replace'), VideoFile.encode('ascii','replace'), Sub['website'])
 
     if autosub.POSTPROCESSCMD:

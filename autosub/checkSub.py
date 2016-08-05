@@ -56,16 +56,16 @@ class checkSub():
 
                 log.info("checkSub: Searching downloadlink(s) for %s, for %s" % (Wanted['file'], Wanted['langs']))
                 # get all links above the minimal match score as input for downloadSub
-                SubsNL,SubsEN = autosub.getSubLinks.getSubLinks(Wanted)
+                SubsFR,SubsEN = autosub.getSubLinks.getSubLinks(Wanted)
 
-                if not SubsNL and not SubsEN:
+                if not SubsFR and not SubsEN:
                     log.debug("checkSub: No subs found for %s" % Wanted['file'])
                     Index += 1
                     continue
-                if SubsNL:
-                    log.debug('checkSub: Dutch Subtitle(s) found trying to download the highest scored.')
-                    if DownloadSub(Wanted,SubsNL):
-                        Wanted['langs'].remove(autosub.DUTCH)
+                if SubsFR:
+                    log.debug('checkSub: French Subtitle(s) found trying to download the highest scored.')
+                    if DownloadSub(Wanted,SubsFR):
+                        Wanted['langs'].remove(autosub.FRENCH)
                         if not autosub.DOWNLOADENG and autosub.ENGLISH in Wanted['langs']:
                             Wanted['langs'].remove(autosub.ENGLISH)
                             SubsEN =[]

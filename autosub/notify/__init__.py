@@ -30,7 +30,7 @@ def notify(lang, subtitlefile, videofile, website):
     
     if lang == autosub.ENGLISH and autosub.NOTIFYEN:
         notifySend(lang, subtitlefile, videofile, website)
-    if lang == autosub.DUTCH and autosub.NOTIFYNL:
+    if lang == autosub.FRENCH and autosub.NOTIFYFR:
         notifySend(lang, subtitlefile, videofile, website)
 
 def notifySend(lang, subtitlefile, videofile, website):

@@ -22,7 +22,7 @@ log = logging.getLogger('thelogger')
 
 def SubtitleSeeker(Wanted, sourceWebsites):
     # Get the scored list for all SubtitleSeeker hits
-    ScoreListNL, ScoreListEN = [],[]
+    ScoreListFR, ScoreListEN = [],[]
     log.debug('getSubLinks: SubtitlesSeeker search started for %s on sites: %s ' % (Wanted['ImdbId'],sourceWebsites))
 
     # Compose the search URL for the subtitle and language we want.
@@ -37,20 +37,20 @@ def SubtitleSeeker(Wanted, sourceWebsites):
             SubseekerSession.close()
         except Exception as error:
             log.error("getSubLink: The SubtitleSeeker server returned an error. Message is %s" % error)
-            return ScoreListNL,ScoreListEN
+            return ScoreListFR,ScoreListEN
     else:
         log.error("getSubLink: out of api calls for SubtitleSeeker.com")
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
 
     # Check to see whether we have results or not
     try:
         if not 'total_matches' in Result['results'].keys():
-            return ScoreListNL,ScoreListEN
+            return ScoreListFR,ScoreListEN
     except Exception as error:
         log.info('getSublink: No subtitle found on Subtitleseeker for this video : %s' % Wanted['file'])
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
     if int(Result['results']['total_matches']) == 0:
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
 
     # Split the result in the two languages(if needed) and score the subs
     NameDict = {}
@@ -68,18 +68,18 @@ def SubtitleSeeker(Wanted, sourceWebsites):
             if score >= autosub.MINMATCHSCORE:
                 if Item['language'] == autosub.ENGLISH:
                     ScoreListEN.append({'score':score, 'url':Item['url'] , 'website':Item['site'].lower(),'Lang':Item['language'], 'releaseName':Item['release'],'SubCodec':u''})
-                if Item['language'] == autosub.DUTCH:
-                    ScoreListNL.append({'score':score, 'url':Item['url'] , 'website':Item['site'].lower(),'Lang':Item['language'], 'releaseName':Item['release'],'SubCodec':u''})
-    return ScoreListNL,ScoreListEN
+                if Item['language'] == autosub.FRENCH:
+                    ScoreListFR.append({'score':score, 'url':Item['url'] , 'website':Item['site'].lower(),'Lang':Item['language'], 'releaseName':Item['release'],'SubCodec':u''})
+    return ScoreListFR,ScoreListEN
 
 
 def Addic7ed( Wanted):
 
-    ScoreListNL,ScoreListEN = [],[]
+    ScoreListFR,ScoreListEN = [],[]
     langs = u''
     if autosub.ENGLISH in Wanted['langs']:
         langs = '|1|'
-    if autosub.DUTCH in Wanted['langs']:
+    if autosub.FRENCH in Wanted['langs']:
         langs = langs +'17|' if langs else '|17|'
 
     SearchUrl = '/ajax_loadShow.php?show=' + Wanted['A7Id'] + '&season=' + Wanted['season'].lstrip('0') + '&langs=' + langs + '&hd=0&hi=0'
@@ -87,7 +87,7 @@ def Addic7ed( Wanted):
         log.debug('getSubLinks: Addic7ed search started for %s.' % Wanted['A7Id'])
     else:
         log.debug('getSubLinks: No Addic7Id for %s, so it is skipped. ' % Wanted['file'])
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
 
     Result = autosub.ADDIC7EDAPI.get(SearchUrl)
     if Result:
@@ -95,9 +95,9 @@ def Addic7ed( Wanted):
             soup = BeautifulSoup(Result)
         except:
             log.debug("getSubLinks: Addic7ed no soup exception.")
-            return ScoreListNL,ScoreListEN
+            return ScoreListFR,ScoreListEN
     else:
-       return ScoreListNL,ScoreListEN
+       return ScoreListFR,ScoreListEN
 
     for row in soup('tr', class_='epeven completed'):
         try:
@@ -138,17 +138,17 @@ def Addic7ed( Wanted):
                     continue
                 log.debug('Addic7ed: Score = %s of %s for %s sub of %s.' % (score, autosub.MINMATCHSCORE, cells[3].string, releasename))
                 if score >= autosub.MINMATCHSCORE:
-                    if cells[3].string == autosub.DUTCH:
-                        ScoreListNL.append({'score':score , 'releaseName':releasename, 'website':'addic7ed.com' , 'url':downloadUrl , 'Lang':cells[3].string, 'SubCodec':''})
+                    if cells[3].string == autosub.FRENCH:
+                        ScoreListFR.append({'score':score , 'releaseName':releasename, 'website':'addic7ed.com' , 'url':downloadUrl , 'Lang':cells[3].string, 'SubCodec':''})
                     if cells[3].string == autosub.ENGLISH:
                         ScoreListEN.append({'score':score , 'releaseName':releasename, 'website':'addic7ed.com' , 'url':downloadUrl , 'Lang':cells[3].string, 'SubCodec':''})
         except:
             pass
-    return ScoreListNL,ScoreListEN
+    return ScoreListFR,ScoreListEN
 
 
 def Opensubtitles(Wanted):
-    ScoreListNL, ScoreListEN = [],[]
+    ScoreListFR, ScoreListEN = [],[]
     # Format a dict for the opensubtitles API call
     Data = {}
     Data['sublanguageid'] = Wanted['langs'][0][:3] if len(Wanted['langs']) == 1 else  Wanted['langs'][0][:3] + ',' +  Wanted['langs'][1][:3]
@@ -158,17 +158,17 @@ def Opensubtitles(Wanted):
     log.debug('getSubLinks:Opensubtitles search started for %s.' % Wanted['ImdbId'])
     time.sleep(3)
     if not OpenSubtitlesNoOp():
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
 
     try:
         Subs = autosub.OPENSUBTITLESSERVER.SearchSubtitles(autosub.OPENSUBTITLESTOKEN, [Data])
     except:
         autosub.OPENSUBTITLESTOKEN = None
         log.error('Opensubtitles: Error from Opensubtitles search API')
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
     if Subs['status'] != '200 OK':
         log.debug('Opensubtitles: No subs found for %s on Opensubtitles.' % Wanted['releaseName'])
-        return ScoreListNL,ScoreListEN
+        return ScoreListFR,ScoreListEN
     NameDict = {}
     for Sub in Subs['data']:
         try:
@@ -186,11 +186,11 @@ def Opensubtitles(Wanted):
             continue
         log.debug('Opensubtitles: Score = %s of %s for %s sub of %s.' % (score, autosub.MINMATCHSCORE, Sub['LanguageName'], Sub['MovieReleaseName']))
         if score >= autosub.MINMATCHSCORE:
-            if Sub['LanguageName'] == autosub.DUTCH:
-                ScoreListNL.append({'score':score, 'url':Sub['IDSubtitleFile'] , 'website':'opensubtitles.org','releaseName':Sub['MovieReleaseName'], 'SubCodec':Sub['SubEncoding'],'Lang':Sub['LanguageName']})
+            if Sub['LanguageName'] == autosub.FRENCH:
+                ScoreListFR.append({'score':score, 'url':Sub['IDSubtitleFile'] , 'website':'opensubtitles.org','releaseName':Sub['MovieReleaseName'], 'SubCodec':Sub['SubEncoding'],'Lang':Sub['LanguageName']})
             if Sub['LanguageName'] == autosub.ENGLISH:
                 ScoreListEN.append({'score':score, 'url':Sub['IDSubtitleFile'] , 'website':'opensubtitles.org','releaseName':Sub['MovieReleaseName'], 'SubCodec':Sub['SubEncoding'],'Lang':Sub['LanguageName']})
-    return ScoreListNL,ScoreListEN
+    return ScoreListFR,ScoreListEN
 
 
 def getSubLinks(Wanted):
@@ -204,10 +204,10 @@ def getSubLinks(Wanted):
     Wanted -- Dict containing the ImdbId, A7Id, quality, releasegrp, source season and episode.
     """
     log.debug("getSubLinks: Show ID: %s - Addic7ed ID: %s - Language: %s - Title: %s" % (Wanted['ImdbId'],Wanted['A7Id'],Wanted['langs'],Wanted['title']))
-    sourceWebsites, fullScoreListNL, fullScoreListEN   = [],[],[]
-    scoreListSubSeekerNL    , scoreListSubSeekerEN     = [],[]
-    scoreListAddic7edNL     , scoreListAddic7edEN      = [],[]
-    scoreListOpensubtitlesNL, scoreListOpensubtitlesEN = [],[]
+    sourceWebsites, fullScoreListFR, fullScoreListEN   = [],[],[]
+    scoreListSubSeekerFR    , scoreListSubSeekerEN     = [],[]
+    scoreListAddic7edFR     , scoreListAddic7edEN      = [],[]
+    scoreListOpensubtitlesFR, scoreListOpensubtitlesEN = [],[]
 
     if autosub.PODNAPISI:
         sourceWebsites.append('podnapisi.net')
@@ -217,7 +217,7 @@ def getSubLinks(Wanted):
     # If podnapisi or subscene is choosen call subtitleseeker
 
     if len(sourceWebsites) > 0:
-        scoreListSubSeekerNL,scoreListSubSeekerEN = SubtitleSeeker(Wanted, sourceWebsites)
+        scoreListSubSeekerFR,scoreListSubSeekerEN = SubtitleSeeker(Wanted, sourceWebsites)
 
     # Use Addic7ed if selected
     # and check if Addic7ed download limit has been reached
@@ -226,23 +226,23 @@ def getSubLinks(Wanted):
         log.debug("checkSub: You have reached your 24h limit of %s  Addic7ed downloads!" % autosub.DOWNLOADS_A7MAX)
 
     if autosub.ADDIC7ED and Wanted['A7Id'] and autosub.ADDIC7EDLOGGED_IN:
-        scoreListAddic7edNL,scoreListAddic7edEN = Addic7ed(Wanted)
+        scoreListAddic7edFR,scoreListAddic7edEN = Addic7ed(Wanted)
 
     # Use OpenSubtitles if selected
     if autosub.OPENSUBTITLES and autosub.OPENSUBTITLESTOKEN:
-        scoreListOpensubtitlesNL,scoreListOpensubtitlesEN = Opensubtitles(Wanted)
+        scoreListOpensubtitlesFR,scoreListOpensubtitlesEN = Opensubtitles(Wanted)
 
     # merge the Dutch subs and sort them on the highest score
     # If there are results with the same score, the download links which comes last (anti-alphabetically) will be returned
-    for list in [scoreListSubSeekerNL, scoreListAddic7edNL, scoreListOpensubtitlesNL]:
-        if list: fullScoreListNL.extend(list)
-    if fullScoreListNL:
-        fullScoreListNL = sorted(fullScoreListNL, key=itemgetter('score', 'website'), reverse=True)
-        log.info('getSubLinks: Found %d DUTCH subs which matched the min match score.' % len(scoreListOpensubtitlesNL))
+    for list in [scoreListSubSeekerFR, scoreListAddic7edFR, scoreListOpensubtitlesFR]:
+        if list: fullScoreListFR.extend(list)
+    if fullScoreListFR:
+        fullScoreListFR = sorted(fullScoreListFR, key=itemgetter('score', 'website'), reverse=True)
+        log.info('getSubLinks: Found %d FRENCH subs which matched the min match score.' % len(scoreListOpensubtitlesFR))
     # the same for the English subs
     for list in [scoreListSubSeekerEN, scoreListAddic7edEN, scoreListOpensubtitlesEN]:
         if list: fullScoreListEN.extend(list)
     if fullScoreListEN:
         fullScoreListEN = sorted(fullScoreListEN, key=itemgetter('score', 'website'), reverse=True)
-        log.info('getSubLinks: Found %d ENGLISH subs which matched the min match score.' % len(scoreListOpensubtitlesNL))
-    return fullScoreListNL,fullScoreListEN
+        log.info('getSubLinks: Found %d ENGLISH subs which matched the min match score.' % len(scoreListOpensubtitlesFR))
+    return fullScoreListFR,fullScoreListEN

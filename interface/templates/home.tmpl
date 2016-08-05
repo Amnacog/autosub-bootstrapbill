@@ -24,8 +24,8 @@
 	<div id="Display1">
 #end if
 		<div class="well well-sm center well-header"><font size="3"><b>Wanted</b></font></div>
-#if not $autosub.DOWNLOADDUTCH and not $autosub.DOWNLOADENG:
-		<div class="alert alert-danger center"><span class="glyphicon glyphicon-info-sign"></span> <strong>Oh snap!</strong> You currently have Dutch and English disabled, you don't want to use me anymore? :( <span class="glyphicon glyphicon-info-sign"></span></div>
+#if not $autosub.DOWNLOADFRENCH and not $autosub.DOWNLOADENG:
+		<div class="alert alert-danger center"><span class="glyphicon glyphicon-info-sign"></span> <strong>Oh snap!</strong> You currently have French and English disabled, you don't want to use me anymore? :( <span class="glyphicon glyphicon-info-sign"></span></div>
 #else		
 		<div class="well well-sm center">
 #if $len($autosub.WANTEDQUEUE) == 0
@@ -121,8 +121,8 @@
 #end if
 
 <td>
-#if "Dutch" in $var['langs']
-			<img src="$autosub.WEBROOT/images/Dutch.png" alt="Dutch" title="Dutch">
+#if "French" in $var['langs']
+			<img src="$autosub.WEBROOT/images/French.png" alt="French" title="French">
 #end if
 #if "English" in $var['langs']
 			<img src="$autosub.WEBROOT/images/English.png" alt="English" title="English">

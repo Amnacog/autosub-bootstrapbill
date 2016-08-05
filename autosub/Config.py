@@ -54,11 +54,11 @@ def ReadConfig():
     if not cfg.has_section(section):  cfg.add_section(section)
     if cfg.has_option(section, "configversion"):        autosub.CONFIGVERSION       = cfg.getint("config", "configversion") 
     if cfg.has_option(section, "wantedfirst"):          autosub.WANTEDFIRST         = cfg.getboolean(section, "wantedfirst")
-    if cfg.has_option(section, 'downloaddutch'):        autosub.DOWNLOADDUTCH       = cfg.getboolean(section, 'downloaddutch')
+    if cfg.has_option(section, 'downloadfrench'):        autosub.DOWNLOADFRENCH       = cfg.getboolean(section, 'downloadfrench')
     if cfg.has_option(section, 'downloadeng'):          autosub.DOWNLOADENG         = cfg.getboolean(section, 'downloadeng')
     if cfg.has_option(section, "fallbacktoeng"):        autosub.FALLBACKTOENG       = cfg.getboolean(section, "fallbacktoeng")
     if cfg.has_option(section, "notifyen"):             autosub.NOTIFYEN            = cfg.getboolean(section, "notifyen")
-    if cfg.has_option(section, "notifynl"):             autosub.NOTIFYNL            = cfg.getboolean(section, "notifynl")
+    if cfg.has_option(section, "notifyfr"):             autosub.NOTIFYFR            = cfg.getboolean(section, "notifyfr")
     if cfg.has_option(section, "launchbrowser"):        autosub.LAUNCHBROWSER       = cfg.getboolean(section, "launchbrowser")
     if cfg.has_option(section, "skiphiddendirs"):       autosub.SKIPHIDDENDIRS      = cfg.getboolean(section, "skiphiddendirs")
     if cfg.has_option(section, "englishsubdelete"):     autosub.ENGLISHSUBDELETE    = cfg.getboolean(section, "englishsubdelete")
@@ -74,7 +74,7 @@ def ReadConfig():
     if cfg.has_option(section, "rootpath"):             autosub.SERIESPATH          = cfg.get(section, "rootpath")
     if cfg.has_option(section, "seriespath"):           autosub.SERIESPATH          = cfg.get(section, "seriespath")
     if cfg.has_option(section, "subeng"):               autosub.SUBENG              = cfg.get(section, "subeng")
-    if cfg.has_option(section, "subnl"):                autosub.SUBNL               = cfg.get(section, "subnl")
+    if cfg.has_option(section, "subfr"):                autosub.SUBFR               = cfg.get(section, "subfr")
     if cfg.has_option(section, "postprocesscmd"):       autosub.POSTPROCESSCMD      = cfg.get(section, "postprocesscmd")
     if cfg.has_option(section, "opensubtitlesuser"):    autosub.OPENSUBTITLESUSER   = cfg.get(section, "opensubtitlesuser")
     if cfg.has_option(section, "opensubtitlespasswd"):  autosub.OPENSUBTITLESPASSWD = cfg.get(section, "opensubtitlespasswd") 
@@ -82,9 +82,9 @@ def ReadConfig():
     if cfg.has_option(section, "addic7edpasswd"):       autosub.ADDIC7EDPASSWD      = cfg.get(section, "addic7edpasswd") 
     if cfg.has_option(section, "logfile"):              autosub.LOGFILE             = cfg.get(section, "logfile")
     if cfg.has_option(section, "subcodec"):             autosub.SUBCODEC            = cfg.get(section, "subcodec")
-    if cfg.has_option(section, "skipstringnl"):         autosub.SKIPSTRINGNL        = cfg.get(section, "skipstringnl")
+    if cfg.has_option(section, "skipstringfr"):         autosub.SKIPSTRINGFR        = cfg.get(section, "skipstringfr")
     if cfg.has_option(section, "skipstringen"):         autosub.SKIPSTRINGEN        = cfg.get(section, "skipstringen")
-    if cfg.has_option(section, "skipfoldersnl"):        autosub.SKIPFOLDERSNL       = cfg.get(section, "skipfoldersnl")
+    if cfg.has_option(section, "skipfoldersfr"):        autosub.SKIPFOLDERSFR       = cfg.get(section, "skipfoldersfr")
     if cfg.has_option(section, "skipfoldersen"):        autosub.SKIPFOLDERSEN       = cfg.get(section, "skipfoldersen")
 
 
@@ -431,13 +431,13 @@ def WriteConfig():
     cfg.add_section(section)
     cfg.set(section, "path", autosub.PATH )
     cfg.set(section, "seriespath", autosub.SERIESPATH) 
-    cfg.set(section, 'downloaddutch', str(autosub.DOWNLOADDUTCH))
+    cfg.set(section, 'downloadfrench', str(autosub.DOWNLOADFRENCH))
     cfg.set(section, 'downloadeng', str(autosub.DOWNLOADENG))
     cfg.set(section, "subeng", autosub.SUBENG)
-    cfg.set(section, "subnl", autosub.SUBNL)
+    cfg.set(section, "subfr", autosub.SUBFR)
     cfg.set(section, "fallbacktoeng", str(autosub.FALLBACKTOENG))
     cfg.set(section, "notifyen", str(autosub.NOTIFYEN))
-    cfg.set(section, "notifynl", str(autosub.NOTIFYNL))
+    cfg.set(section, "notifyfr", str(autosub.NOTIFYFR))
     cfg.set(section, "wantedfirst", str(autosub.WANTEDFIRST))
     cfg.set(section, "launchbrowser", str(autosub.LAUNCHBROWSER))
     cfg.set(section, "skiphiddendirs", str(autosub.SKIPHIDDENDIRS))
@@ -457,9 +457,9 @@ def WriteConfig():
     cfg.set(section, "addic7eduser", autosub.ADDIC7EDUSER)
     cfg.set(section, "addic7edpasswd", autosub.ADDIC7EDPASSWD)
     cfg.set(section, "subcodec", autosub.SUBCODEC)
-    cfg.set(section, "skipstringnl", autosub.SKIPSTRINGNL)
+    cfg.set(section, "skipstringfr", autosub.SKIPSTRINGFR)
     cfg.set(section, "skipstringen", autosub.SKIPSTRINGEN)
-    cfg.set(section, "skipfoldersnl", autosub.SKIPFOLDERSNL)
+    cfg.set(section, "skipfoldersfr", autosub.SKIPFOLDERSFR)
     cfg.set(section, "skipfoldersen", autosub.SKIPFOLDERSEN)
 
     section = 'webserver'
@@ -629,10 +629,10 @@ def upgradeConfig(cfg, from_version, to_version):
                 cfg.remove_option('config','addic7edlang')
             if cfg.has_option("config", "webdl"):
                 Webdl = cfg.get("config", "webdl")
-                if Webdl == u"DutchOnly":
+                if Webdl == u"FrenchOnly":
                     autosub.SKIPSTRINGEN = "Web-dl"
                 elif Webdl == "None":
-                    autosub.SKIPSTRINGNL = autosub.SKIPSTRINGEN = u"Web-dl"
+                    autosub.SKIPSTRINGFR = autosub.SKIPSTRINGEN = u"Web-dl"
             autosub.CONFIGVERSION = 4
             WriteConfig()
             print "Config: Config upgraded to version 4"
